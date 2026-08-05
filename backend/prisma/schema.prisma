@@ -1,0 +1,199 @@
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+enum Rol {
+  TEKNISYEN
+  YONETICI
+}
+
+enum HareketTipi {
+  GIRIS
+  CIKIS
+}
+
+enum TalepDurumu {
+  BEKLIYOR
+  ONAYLANDI
+  REDDEDILDI
+  SIPARIS_VERILDI
+  TESLIM_ALINDI
+}
+
+enum BakimTipi {
+  DEGISTIRILDI
+  TAMIR_EDILDI
+}
+
+model Kullanici {
+  id          Int      @id @default(autoincrement())
+  ad          String
+  soyad       String
+  email       String   @unique
+  sifreHash   String
+  rol         Rol      @default(TEKNISYEN)
+  unvan       String?
+  aktif       Boolean  @default(true)
+  olusturma   DateTime @default(now())
+
+  talepler         ParcaTalebi[]
+  hareketler       StokHareketi[]
+  onayladigiTalep  ParcaTalebi[]  @relation("Onaylayan")
+  bakimKayitlari   BakimKaydi[]
+}
+
+model Kategori {
+  id       Int     @id @default(autoincrement())
+  ad       String  @unique
+  aciklama String?
+  parcalar Parca[]
+}
+
+model IhaModeli {
+  id             Int              @id @default(autoincrement())
+  ad             String
+  uretici        String
+  aciklama       String?
+  uyumluParcalar ParcaUyumluluk[]
+  araclar        IhaAraci[]
+}
+
+model IhaAraci {
+  id           Int      @id @default(autoincrement())
+  kuyrukNo     String   @unique
+  ihaModeliId  Int
+  durum        String   @default("AKTIF")
+  aciklama     String?
+  olusturma    DateTime @default(now())
+
+  ihaModeli    IhaModeli    @relation(fields: [ihaModeliId], references: [id])
+  bakimKayitlari BakimKaydi[]
+}
+
+model Parca {
+  id            Int      @id @default(autoincrement())
+  kod           String   @unique
+  ad            String
+  aciklama      String?
+  birim         String   @default("adet")
+  kritikSeviye  Int      @default(5)
+  arizali       Boolean  @default(false)
+  kategoriId    Int
+  olusturma     DateTime @default(now())
+  guncelleme    DateTime @updatedAt
+
+  kategori      Kategori         @relation(fields: [kategoriId], references: [id])
+  uyumluluklar  ParcaUyumluluk[]
+  stokKalemler  StokKalem[]
+  hareketler    StokHareketi[]
+  talepler      ParcaTalebi[]
+  bakimKayitlari BakimKaydi[]
+}
+
+model ParcaUyumluluk {
+  parcaId     Int
+  ihaModeliId Int
+
+  parca     Parca     @relation(fields: [parcaId], references: [id], onDelete: Cascade)
+  ihaModeli IhaModeli @relation(fields: [ihaModeliId], references: [id], onDelete: Cascade)
+
+  @@id([parcaId, ihaModeliId])
+}
+
+model Depo {
+  id       Int     @id @default(autoincrement())
+  ad       String
+  lokasyon String?
+
+  stokKalemler StokKalem[]
+  hareketler   StokHareketi[]
+}
+
+model StokKalem {
+  id       Int     @id @default(autoincrement())
+  parcaId  Int
+  depoId   Int
+  miktar   Int     @default(0)
+  rafKodu  String?
+
+  parca Parca @relation(fields: [parcaId], references: [id])
+  depo  Depo  @relation(fields: [depoId], references: [id])
+
+  @@unique([parcaId, depoId])
+}
+
+model StokHareketi {
+  id          Int         @id @default(autoincrement())
+  parcaId     Int
+  depoId      Int
+  tip         HareketTipi
+  miktar      Int
+  aciklama    String?
+  kullaniciId Int
+  tarih       DateTime    @default(now())
+
+  parca     Parca     @relation(fields: [parcaId], references: [id])
+  depo      Depo      @relation(fields: [depoId], references: [id])
+  kullanici Kullanici @relation(fields: [kullaniciId], references: [id])
+}
+
+model ParcaTalebi {
+  id           Int         @id @default(autoincrement())
+  parcaId      Int
+  miktar       Int
+  aciklama     String?
+  durum        TalepDurumu @default(BEKLIYOR)
+  teknisyenId  Int
+  onaylayanId  Int?
+  redSebebi    String?
+  olusturma    DateTime    @default(now())
+  guncelleme   DateTime    @updatedAt
+
+  parca      Parca      @relation(fields: [parcaId], references: [id])
+  teknisyen  Kullanici  @relation(fields: [teknisyenId], references: [id])
+  onaylayan  Kullanici? @relation("Onaylayan", fields: [onaylayanId], references: [id])
+  siparis    Siparis?
+}
+
+model Tedarikci {
+  id       Int    @id @default(autoincrement())
+  ad       String @unique
+  telefon  String?
+  email    String?
+  siparisler Siparis[]
+}
+
+model Siparis {
+  id             Int       @id @default(autoincrement())
+  talepId        Int       @unique
+  tedarikciId    Int
+  miktar         Int
+  birimFiyat     Decimal?  @db.Decimal(10, 2)
+  siparisTarihi  DateTime  @default(now())
+  teslimTarihi   DateTime?
+  teslimAlindi   Boolean   @default(false)
+
+  talep     ParcaTalebi @relation(fields: [talepId], references: [id])
+  tedarikci Tedarikci   @relation(fields: [tedarikciId], references: [id])
+}
+
+model BakimKaydi {
+  id          Int       @id @default(autoincrement())
+  ihaAraciId  Int
+  parcaId     Int
+  kullaniciId Int
+  tip         BakimTipi
+  aciklama    String?
+  tarih       DateTime  @default(now())
+
+  ihaArac   IhaAraci  @relation(fields: [ihaAraciId], references: [id])
+  parca     Parca     @relation(fields: [parcaId], references: [id])
+  kullanici Kullanici @relation(fields: [kullaniciId], references: [id])
+}
