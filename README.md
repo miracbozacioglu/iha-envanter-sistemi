@@ -2,7 +2,7 @@
   
   <img src="https://img.icons8.com/color/120/000000/drone.png" alt="UAV Logo" width="120" />
 
-  <h1>🚁 İHA-ENVANTER</h1>
+  <h1> İHA-ENVANTER</h1>
   <p><b> Stok ve Depo Yönetim ERP Modülü</b></p>
 
   <p>
