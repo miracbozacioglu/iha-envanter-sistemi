@@ -3,7 +3,7 @@
   <img src="https://img.icons8.com/color/120/000000/drone.png" alt="UAV Logo" width="120" />
 
   <h1>🚁 İHA-ENVANTER</h1>
-  <p><b>Dijital İkiz (Digital Twin) Destekli Akıllı Stok ve Depo Yönetim ERP Modülü</b></p>
+  <p><b> Stok ve Depo Yönetim ERP Modülü</b></p>
 
   <p>
     <a href="#"><img src="https://img.shields.io/badge/Versiyon-1.0.3-blue?style=for-the-badge" alt="Version"></a>
@@ -40,7 +40,7 @@
 
 **İHA-ENVANTER**, havacılık ve insansız hava aracı (İHA) endüstrisi için tasarlanmış yenilikçi bir tam yığın (full-stack) stok yönetim sistemidir. 
 
-Standart depo süreçlerini sıradanlıktan çıkararak **"Dijital İkiz"** konseptiyle birleştirir. Sistem, depo ve bakım personelinin 3 boyutlu araç modelleri üzerinden anlık stok miktarlarını, depo raf lokasyonlarını ve parça uyumluluk durumlarını saniyeler içinde görüntüleyip yönetmesine olanak tanır. Amacımız; karmaşık havacılık bakım süreçlerini, stok düşümlerini ve ömürlü parça takiplerini görsel, sezgisel ve hatasız bir deneyime dönüştürmektir.
+Standart depo süreçlerini sıradanlıktan çıkararak **"Dijital İkiz"** konseptiyle birleştirir. Sistem, depo ve bakım personelinin araç modelleri üzerinden anlık stok miktarlarını, depo raf lokasyonlarını ve parça uyumluluk durumlarını saniyeler içinde görüntüleyip yönetmesine olanak tanır. Amacımız; karmaşık havacılık bakım süreçlerini, stok düşümlerini ve ömürlü parça takiplerini görsel, sezgisel ve hatasız bir deneyime dönüştürmektir.
 
 <br />
 
