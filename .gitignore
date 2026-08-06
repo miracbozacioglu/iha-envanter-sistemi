@@ -20,6 +20,6 @@ build/
 .DS_Store
 Thumbs.db
 
-.windsurf
-.claude
-.agents
+.agents/
+.claude/
+.windsurf/
