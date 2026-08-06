@@ -37,7 +37,12 @@ export class KullanicilarController {
   @Get()
   @ApiOperation({
     summary: 'Kullanicilari listele',
+<<<<<<< HEAD
     description: 'Tum kullanicilari id sirasiyla doner. Sifre hash i dahil edilmez.',
+=======
+    description:
+      'Tum kullanicilari id sirasiyla doner. Sifre hash i dahil edilmez.',
+>>>>>>> 85fc1ad10153bd07300a2abe9ed9894f4a2c1a6e
   })
   findAll(): Promise<AuthUser[]> {
     return this.kullanicilarService.findAll();
