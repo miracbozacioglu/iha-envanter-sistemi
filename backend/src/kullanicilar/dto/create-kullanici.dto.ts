@@ -28,12 +28,8 @@ export class CreateKullaniciDto {
   email: string;
 
   @ApiProperty({
-<<<<<<< HEAD
-    description: 'Sifre (en az 6 karakter). Veritabanina bcrypt ile hash lenerek yazilir.',
-=======
     description:
       'Sifre (en az 6 karakter). Veritabanina bcrypt ile hash lenerek yazilir.',
->>>>>>> 85fc1ad10153bd07300a2abe9ed9894f4a2c1a6e
     example: 'Gecici123!',
     minLength: 6,
   })
