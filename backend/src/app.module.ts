@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { BakimModule } from './bakim/bakim.module';
 import { IhaAraclariModule } from './iha-araclari/iha-araclari.module';
 import { IhaModelleriModule } from './iha-modelleri/iha-modelleri.module';
+import { IstatistikModule } from './istatistik/istatistik.module';
 import { KategorilerModule } from './kategoriler/kategoriler.module';
 import { KullanicilarModule } from './kullanicilar/kullanicilar.module';
 import { ParcalarModule } from './parcalar/parcalar.module';
@@ -30,6 +31,7 @@ import { TedarikcilerModule } from './tedarikciler/tedarikciler.module';
     TaleplerModule,
     SiparislerModule,
     BakimModule,
+    IstatistikModule,
   ],
   controllers: [AppController],
   providers: [AppService],
