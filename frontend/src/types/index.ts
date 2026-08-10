@@ -140,8 +140,12 @@ export interface StokKalem {
 /**
  * Hareket listelerinde kullanıcı tam nesne olarak değil, seçilmiş alanlarla
  * gelir (backend `sifreHash` sızmasın diye `select` kullanıyor).
+ *
+ * Dikkat: iki uç farklı alan seçiyor —
+ * `/parcalar/:id/hareketler` rol de döner, `/stok/hareketler` dönmez.
  */
 export type HareketKullanicisi = Pick<Kullanici, 'id' | 'ad' | 'soyad' | 'rol'>;
+export type HareketKullanicisiKisa = Pick<Kullanici, 'id' | 'ad' | 'soyad'>;
 
 export interface StokHareketi {
   id: number;
@@ -157,6 +161,19 @@ export interface StokHareketi {
   depo?: Depo;
   kullanici?: HareketKullanicisi;
 }
+
+/** GET /stok — stok kalemi her zaman parçası ve deposuyla döner. */
+export type StokKalemDetay = Omit<StokKalem, 'parca' | 'depo'> & {
+  parca: Parca;
+  depo: Depo;
+};
+
+/** GET /stok/hareketler — parça, depo ve işlemi yapan kullanıcı dolu. */
+export type HareketDetay = Omit<StokHareketi, 'parca' | 'depo' | 'kullanici'> & {
+  parca: Parca;
+  depo: Depo;
+  kullanici: HareketKullanicisiKisa;
+};
 
 export interface ParcaTalebi {
   id: number;

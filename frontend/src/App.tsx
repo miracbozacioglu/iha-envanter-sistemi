@@ -5,11 +5,15 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
+import { KullanicilarPage } from './pages/KullanicilarPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ParcaDetayPage } from './pages/ParcaDetayPage';
 import { ParcaFormPage } from './pages/ParcaFormPage';
 import { ParcalarPage } from './pages/ParcalarPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { StokHareketleriPage } from './pages/StokHareketleriPage';
+import { StokPage } from './pages/StokPage';
+import { TanimlamalarPage } from './pages/TanimlamalarPage';
 import type { Rol } from './types';
 
 const YONETICI: readonly Rol[] = ['YONETICI'];
@@ -90,14 +94,20 @@ export default function App() {
               />
 
               {/* Yalnızca yönetici */}
+              {/* "hareketler" statik segmenti, stok altındaki diğer yollardan önce. */}
+              <Route
+                path="stok/hareketler"
+                element={
+                  <ProtectedRoute roller={YONETICI}>
+                    <StokHareketleriPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="stok"
                 element={
                   <ProtectedRoute roller={YONETICI}>
-                    <PlaceholderPage
-                      baslik="Stok Yönetimi"
-                      aciklama="Depo bazlı stok mevcutları, giriş/çıkış işlemleri ve hareket geçmişi burada yönetilecek."
-                    />
+                    <StokPage />
                   </ProtectedRoute>
                 }
               />
@@ -119,11 +129,7 @@ export default function App() {
                 path="tanimlamalar"
                 element={
                   <ProtectedRoute roller={YONETICI}>
-                    <PlaceholderPage
-                      baslik="Tanımlamalar"
-                      aciklama="Kategori, depo, İHA modeli ve tedarikçi tanımlarının yönetimi burada toplanacak."
-                      gun="Gün 10"
-                    />
+                    <TanimlamalarPage />
                   </ProtectedRoute>
                 }
               />
@@ -132,11 +138,7 @@ export default function App() {
                 path="kullanicilar"
                 element={
                   <ProtectedRoute roller={YONETICI}>
-                    <PlaceholderPage
-                      baslik="Kullanıcılar"
-                      aciklama="Kullanıcı hesapları, rol atama ve hesap aktif/pasif yönetimi burada olacak."
-                      gun="Gün 10"
-                    />
+                    <KullanicilarPage />
                   </ProtectedRoute>
                 }
               />
