@@ -35,7 +35,8 @@ export class TedarikcilerController {
   @Get()
   @ApiOperation({
     summary: 'Tedarikcileri listele',
-    description: 'Tum tedarikcileri ada gore sirali doner. Her oturuma aciktir.',
+    description:
+      'Tum tedarikcileri ada gore sirali doner. Her oturuma aciktir.',
   })
   findAll(): Promise<Tedarikci[]> {
     return this.tedarikcilerService.findAll();

@@ -108,50 +108,7 @@ export class StokService {
    */
   async cikis(dto: StokCikisDto, kullaniciId: number): Promise<StokKalemDetay> {
     return this.prisma.$transaction(async (tx) => {
-      const mevcut = await tx.stokKalem.findUnique({
-        where: { parcaId_depoId: { parcaId: dto.parcaId, depoId: dto.depoId } },
-      });
-
-      if (!mevcut) {
-        throw new BadRequestException(
-          `${dto.parcaId} numarali parca ${dto.depoId} numarali depoda yok, cikis yapilamaz.`,
-        );
-      }
-
-      if (dto.miktar > mevcut.miktar) {
-        throw new BadRequestException(
-          `Yetersiz stok: mevcut ${mevcut.miktar}, istenen ${dto.miktar}.`,
-        );
-      }
-
-      // Dusumu kosullu updateMany ile yapiyoruz: `miktar >= istenen` sarti
-      // guncellemenin kendisinde oldugu icin, yukaridaki okuma ile bu yazma
-      // arasina baska bir cikis girse bile stok eksiye dusemez.
-      const sonuc = await tx.stokKalem.updateMany({
-        where: {
-          parcaId: dto.parcaId,
-          depoId: dto.depoId,
-          miktar: { gte: dto.miktar },
-        },
-        data: { miktar: { decrement: dto.miktar } },
-      });
-
-      if (sonuc.count === 0) {
-        throw new ConflictException(
-          'Stok bu islem sirasinda baska bir hareketle degisti, lutfen tekrar deneyin.',
-        );
-      }
-
-      await tx.stokHareketi.create({
-        data: {
-          parcaId: dto.parcaId,
-          depoId: dto.depoId,
-          tip: HareketTipi.CIKIS,
-          miktar: dto.miktar,
-          aciklama: dto.aciklama,
-          kullaniciId,
-        },
-      });
+      await this.stoktanDus(tx, { ...dto, kullaniciId });
 
       // updateMany guncellenen satiri dondurmedigi icin guncel hali okunuyor.
       return tx.stokKalem.findUniqueOrThrow({
@@ -159,6 +116,104 @@ export class StokService {
         include: KALEM_INCLUDE,
       });
     });
+  }
+
+  /**
+   * Verilen transaction icinde stoktan duser ve CIKIS hareketi yazar.
+   *
+   * Transaction'i cagiran taraf acar; boylece ayni dusum, bakim kaydi gibi
+   * baska yazmalarla tek atomik blokta yer alabilir. "Yetersiz stok" kurali
+   * tek yerde durdugu icin serbest cikis ile bakim cikisi ayrisamaz.
+   */
+  async stoktanDus(
+    tx: Prisma.TransactionClient,
+    params: {
+      parcaId: number;
+      depoId: number;
+      miktar: number;
+      aciklama?: string;
+      kullaniciId: number;
+    },
+  ): Promise<void> {
+    const { parcaId, depoId, miktar, aciklama, kullaniciId } = params;
+
+    const mevcut = await tx.stokKalem.findUnique({
+      where: { parcaId_depoId: { parcaId, depoId } },
+    });
+
+    if (!mevcut) {
+      throw new BadRequestException(
+        `${parcaId} numarali parca ${depoId} numarali depoda yok, cikis yapilamaz.`,
+      );
+    }
+
+    if (miktar > mevcut.miktar) {
+      throw new BadRequestException(
+        `Yetersiz stok: mevcut ${mevcut.miktar}, istenen ${miktar}.`,
+      );
+    }
+
+    // Dusumu kosullu updateMany ile yapiyoruz: `miktar >= istenen` sarti
+    // guncellemenin kendisinde oldugu icin, yukaridaki okuma ile bu yazma
+    // arasina baska bir cikis girse bile stok eksiye dusemez.
+    const sonuc = await tx.stokKalem.updateMany({
+      where: { parcaId, depoId, miktar: { gte: miktar } },
+      data: { miktar: { decrement: miktar } },
+    });
+
+    if (sonuc.count === 0) {
+      throw new ConflictException(
+        'Stok bu islem sirasinda baska bir hareketle degisti, lutfen tekrar deneyin.',
+      );
+    }
+
+    await tx.stokHareketi.create({
+      data: {
+        parcaId,
+        depoId,
+        tip: HareketTipi.CIKIS,
+        miktar,
+        aciklama,
+        kullaniciId,
+      },
+    });
+  }
+
+  /**
+   * Hareketin gececegi depoyu belirler. Envanterde tek "Ana Depo" oldugu icin
+   * depoId gonderilmesi zorunlu degil; ama ileride ikinci bir depo acilirsa
+   * sessizce yanlis depoya yazmak yerine alanin doldurulmasini istiyoruz.
+   */
+  async depoyuCoz(
+    tx: Prisma.TransactionClient,
+    depoId?: number,
+  ): Promise<number> {
+    if (depoId !== undefined) {
+      const depo = await tx.depo.findUnique({
+        where: { id: depoId },
+        select: { id: true },
+      });
+
+      if (!depo) {
+        throw new BadRequestException(`${depoId} numarali depo bulunamadi.`);
+      }
+
+      return depo.id;
+    }
+
+    const depolar = await tx.depo.findMany({ select: { id: true }, take: 2 });
+
+    if (depolar.length === 0) {
+      throw new BadRequestException('Sistemde kayitli depo yok.');
+    }
+
+    if (depolar.length > 1) {
+      throw new BadRequestException(
+        'Birden fazla depo kayitli, islemin yapilacagi depoId gonderilmelidir.',
+      );
+    }
+
+    return depolar[0].id;
   }
 
   async findAll(sorgu: StokSorguDto): Promise<StokKalemDetay[]> {

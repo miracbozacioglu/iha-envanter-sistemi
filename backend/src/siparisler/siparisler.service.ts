@@ -7,12 +7,12 @@ import {
 import type {
   Parca,
   ParcaTalebi,
-  Prisma,
   Siparis,
   Tedarikci,
 } from '../../generated/prisma/client';
 import { HareketTipi, TalepDurumu } from '../../generated/prisma/enums';
 import { PrismaService } from '../prisma/prisma.service';
+import { StokService } from '../stok/stok.service';
 import { CreateSiparisDto } from './dto/create-siparis.dto';
 import { TeslimAlDto } from './dto/teslim-al.dto';
 
@@ -29,7 +29,10 @@ const SIPARIS_INCLUDE = {
 
 @Injectable()
 export class SiparislerService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly stokService: StokService,
+  ) {}
 
   async findAll(): Promise<SiparisDetay[]> {
     return this.prisma.siparis.findMany({
@@ -142,7 +145,7 @@ export class SiparislerService {
         );
       }
 
-      const depoId = await this.depoyuCoz(tx, dto.depoId);
+      const depoId = await this.stokService.depoyuCoz(tx, dto.depoId);
 
       // Siparisi ilk iste kapatiyoruz: kosul "teslimAlindi = false" oldugu icin
       // ayni siparise es zamanli gelen ikinci teslim istegi bu satirda takilir
@@ -189,44 +192,5 @@ export class SiparislerService {
         include: SIPARIS_INCLUDE,
       });
     });
-  }
-
-  /**
-   * Teslimatin gidecegi depoyu belirler. Envanterde tek "Ana Depo" oldugu icin
-   * depoId gonderilmesi zorunlu degil; ama ileride ikinci bir depo acilirsa
-   * sessizce yanlis depoya yazmak yerine alanin doldurulmasini istiyoruz.
-   */
-  private async depoyuCoz(
-    tx: Prisma.TransactionClient,
-    depoId?: number,
-  ): Promise<number> {
-    if (depoId !== undefined) {
-      const depo = await tx.depo.findUnique({
-        where: { id: depoId },
-        select: { id: true },
-      });
-
-      if (!depo) {
-        throw new BadRequestException(`${depoId} numarali depo bulunamadi.`);
-      }
-
-      return depo.id;
-    }
-
-    const depolar = await tx.depo.findMany({ select: { id: true }, take: 2 });
-
-    if (depolar.length === 0) {
-      throw new BadRequestException(
-        'Sistemde kayitli depo yok, teslim alinamaz.',
-      );
-    }
-
-    if (depolar.length > 1) {
-      throw new BadRequestException(
-        'Birden fazla depo kayitli, teslimatin yapilacagi depoId gonderilmelidir.',
-      );
-    }
-
-    return depolar[0].id;
   }
 }
