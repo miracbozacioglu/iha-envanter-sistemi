@@ -27,7 +27,10 @@ import { KullanicilarService } from './kullanicilar.service';
 @ApiTags('kullanicilar')
 @ApiBearerAuth()
 @ApiResponse({ status: 401, description: 'Token gecersiz veya eksik.' })
-@ApiResponse({ status: 403, description: 'Bu islem icin YONETICI olmalisiniz.' })
+@ApiResponse({
+  status: 403,
+  description: 'Bu islem icin YONETICI olmalisiniz.',
+})
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Rol.YONETICI)
 @Controller('kullanicilar')

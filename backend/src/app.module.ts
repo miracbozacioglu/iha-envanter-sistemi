@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { BakimModule } from './bakim/bakim.module';
 import { IhaAraclariModule } from './iha-araclari/iha-araclari.module';
 import { IhaModelleriModule } from './iha-modelleri/iha-modelleri.module';
 import { KategorilerModule } from './kategoriler/kategoriler.module';
@@ -28,6 +29,7 @@ import { TedarikcilerModule } from './tedarikciler/tedarikciler.module';
     StokModule,
     TaleplerModule,
     SiparislerModule,
+    BakimModule,
   ],
   controllers: [AppController],
   providers: [AppService],

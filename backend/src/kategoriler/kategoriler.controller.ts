@@ -90,7 +90,10 @@ export class KategorilerController {
   })
   @ApiResponse({ status: 403, description: 'YONETICI olmalisiniz.' })
   @ApiResponse({ status: 404, description: 'Kategori bulunamadi.' })
-  @ApiResponse({ status: 400, description: 'Bagli parcalar nedeniyle silinemiyor.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bagli parcalar nedeniyle silinemiyor.',
+  })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Kategori> {
     return this.kategorilerService.remove(id);
   }

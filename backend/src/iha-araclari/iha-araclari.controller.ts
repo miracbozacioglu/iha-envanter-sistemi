@@ -45,7 +45,8 @@ export class IhaAraclariController {
   @Get(':id')
   @ApiOperation({
     summary: 'Tek IHA araci getir',
-    description: 'Araci model bilgisiyle birlikte doner; bulunamazsa 404 doner.',
+    description:
+      'Araci model bilgisiyle birlikte doner; bulunamazsa 404 doner.',
   })
   @ApiResponse({ status: 404, description: 'IHA araci bulunamadi.' })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<IhaAraciDetay> {
@@ -75,7 +76,10 @@ export class IhaAraclariController {
   })
   @ApiResponse({ status: 403, description: 'YONETICI olmalisiniz.' })
   @ApiResponse({ status: 404, description: 'IHA araci bulunamadi.' })
-  @ApiResponse({ status: 409, description: 'Bu kuyruk no baska bir araca ait.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Bu kuyruk no baska bir araca ait.',
+  })
   @ApiResponse({ status: 400, description: 'Belirtilen IHA modeli yok.' })
   update(
     @Param('id', ParseIntPipe) id: number,
