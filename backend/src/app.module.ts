@@ -9,7 +9,9 @@ import { KategorilerModule } from './kategoriler/kategoriler.module';
 import { KullanicilarModule } from './kullanicilar/kullanicilar.module';
 import { ParcalarModule } from './parcalar/parcalar.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SiparislerModule } from './siparisler/siparisler.module';
 import { StokModule } from './stok/stok.module';
+import { TaleplerModule } from './talepler/talepler.module';
 import { TedarikcilerModule } from './tedarikciler/tedarikciler.module';
 
 @Module({
@@ -24,6 +26,8 @@ import { TedarikcilerModule } from './tedarikciler/tedarikciler.module';
     TedarikcilerModule,
     ParcalarModule,
     StokModule,
+    TaleplerModule,
+    SiparislerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
