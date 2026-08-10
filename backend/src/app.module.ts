@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BakimModule } from './bakim/bakim.module';
+import { DepolarModule } from './depolar/depolar.module';
 import { IhaAraclariModule } from './iha-araclari/iha-araclari.module';
 import { IhaModelleriModule } from './iha-modelleri/iha-modelleri.module';
 import { IstatistikModule } from './istatistik/istatistik.module';
@@ -26,6 +27,7 @@ import { TedarikcilerModule } from './tedarikciler/tedarikciler.module';
     IhaModelleriModule,
     IhaAraclariModule,
     TedarikcilerModule,
+    DepolarModule,
     ParcalarModule,
     StokModule,
     TaleplerModule,
