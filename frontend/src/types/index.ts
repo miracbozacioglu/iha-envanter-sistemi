@@ -97,6 +97,21 @@ export interface Parca {
   stokKalemler?: StokKalem[];
 }
 
+/**
+ * GET /parcalar liste satırı — kategori her zaman dolu gelir.
+ * `Omit` ile yeniden tanımlanıyor: doğrudan kesişim alsaydık alan opsiyonel kalırdı.
+ */
+export type ParcaOzet = Omit<Parca, 'kategori'> & { kategori: Kategori };
+
+/** GET /parcalar/:id — kategori, uyumluluklar ve depo stokları dolu. */
+export type ParcaDetay = Omit<ParcaOzet, 'uyumluluklar' | 'stokKalemler'> & {
+  uyumluluklar: (Omit<ParcaUyumluluk, 'ihaModeli'> & { ihaModeli: IhaModeli })[];
+  stokKalemler: (Omit<StokKalem, 'depo'> & { depo: Depo })[];
+};
+
+/** GET /parcalar/kritik — toplam stoğu kritik seviyenin altındaki parçalar. */
+export type KritikParca = ParcaOzet & { toplamStok: number };
+
 export interface ParcaUyumluluk {
   parcaId: number;
   ihaModeliId: number;
@@ -122,6 +137,12 @@ export interface StokKalem {
   depo?: Depo;
 }
 
+/**
+ * Hareket listelerinde kullanıcı tam nesne olarak değil, seçilmiş alanlarla
+ * gelir (backend `sifreHash` sızmasın diye `select` kullanıyor).
+ */
+export type HareketKullanicisi = Pick<Kullanici, 'id' | 'ad' | 'soyad' | 'rol'>;
+
 export interface StokHareketi {
   id: number;
   parcaId: number;
@@ -134,7 +155,7 @@ export interface StokHareketi {
 
   parca?: Parca;
   depo?: Depo;
-  kullanici?: Kullanici;
+  kullanici?: HareketKullanicisi;
 }
 
 export interface ParcaTalebi {
