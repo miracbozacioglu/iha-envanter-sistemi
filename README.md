@@ -6,7 +6,7 @@
   <p><b> Stok ve Depo Yönetim ERP Modülü</b></p>
 
   <p>
-    <a href="#"><img src="https://img.shields.io/badge/Versiyon-1.1.0-blue?style=for-the-badge" alt="Version"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Versiyon-1.2.0-blue?style=for-the-badge" alt="Version"></a>
  
   </p>
 
