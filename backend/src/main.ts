@@ -6,9 +6,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Frontend ayri porttan (Vite: 5173) geliyor; tarayici icin CORS sart.
-  // Kimlik dogrulama Authorization basligiyla yapiliyor, cookie kullanmiyoruz.
   app.enableCors({
     origin: process.env.CORS_ORIGIN?.split(',') ?? [
       'http://localhost:5174',
