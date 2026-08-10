@@ -6,6 +6,9 @@ import { AuthProvider } from './context/AuthContext';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { ParcaDetayPage } from './pages/ParcaDetayPage';
+import { ParcaFormPage } from './pages/ParcaFormPage';
+import { ParcalarPage } from './pages/ParcalarPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import type { Rol } from './types';
 
@@ -39,15 +42,31 @@ export default function App() {
             >
               <Route index element={<DashboardPage />} />
 
+              {/* Görüntüleme her iki role açık. */}
+              <Route path="parcalar" element={<ParcalarPage />} />
+
+              {/*
+                "yeni" statik segmenti ":id" den önce gelmeli; aksi halde parça
+                numarası sanılır. (React Router statik segmenti zaten üstün
+                sıralar, sıra burada okunabilirlik için de korunuyor.)
+              */}
               <Route
-                path="parcalar"
+                path="parcalar/yeni"
                 element={
-                  <PlaceholderPage
-                    baslik="Parça Kataloğu"
-                    aciklama="Parça listesi, kategori filtreleri, kritik seviye uyarıları ve İHA modeli uyumlulukları burada yer alacak."
-                  />
+                  <ProtectedRoute roller={YONETICI}>
+                    <ParcaFormPage />
+                  </ProtectedRoute>
                 }
               />
+              <Route
+                path="parcalar/:id/duzenle"
+                element={
+                  <ProtectedRoute roller={YONETICI}>
+                    <ParcaFormPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="parcalar/:id" element={<ParcaDetayPage />} />
 
               <Route
                 path="talepler"

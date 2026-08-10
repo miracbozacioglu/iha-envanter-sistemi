@@ -66,6 +66,11 @@ api.interceptors.response.use(
   },
 );
 
+/** Hatanın HTTP durum kodu; yanıt hiç gelmediyse undefined. */
+export function hataDurumu(error: unknown): number | undefined {
+  return axios.isAxiosError(error) ? error.response?.status : undefined;
+}
+
 /** Axios hatasından kullanıcıya gösterilebilir tek bir mesaj çıkarır. */
 export function hataMesaji(error: unknown, varsayilan = 'Beklenmeyen bir hata oluştu.'): string {
   if (axios.isAxiosError<ApiHatasi>(error)) {
