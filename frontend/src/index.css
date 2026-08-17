@@ -35,6 +35,18 @@
   --color-olive-400: #A3B47F;
   --color-olive-600: #6B7A4C;
 
+  /* Bilgi (mavi) — sipariş verildi gibi "akış sürüyor" durumları */
+  --color-info-300: #8FC5FF;
+  --color-info-400: #5AA9FF;
+  --color-info-500: #2E86E0;
+  --color-info-900: #0A2440;
+
+  /* Başarı (yeşil) — tamamlanmış durumlar; turkuazdan ayrışsın diye ayrı ton */
+  --color-success-300: #7FE8AC;
+  --color-success-400: #43D98A;
+  --color-success-500: #22B36A;
+  --color-success-900: #0A2E1C;
+
   /* Uyarı ve kritik */
   --color-alert-300: #FFD27A;
   --color-alert-400: #F5B841;

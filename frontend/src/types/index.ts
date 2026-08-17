@@ -193,6 +193,24 @@ export interface ParcaTalebi {
   siparis?: Siparis | null;
 }
 
+/** GET /talepler — parça, teknisyen ve (varsa) onaylayan dolu. */
+export type TalepOzet = Omit<ParcaTalebi, 'parca' | 'teknisyen' | 'onaylayan' | 'siparis'> & {
+  parca: Parca;
+  teknisyen: HareketKullanicisiKisa;
+  onaylayan: HareketKullanicisiKisa | null;
+};
+
+/** GET /talepler/:id — ek olarak talepten doğan sipariş de gelir. */
+export type TalepDetay = TalepOzet & {
+  siparis: (Omit<Siparis, 'talep' | 'tedarikci'> & { tedarikci: Tedarikci }) | null;
+};
+
+/** GET /siparisler — sipariş her zaman talebi (parçasıyla) ve tedarikçisiyle döner. */
+export type SiparisDetay = Omit<Siparis, 'talep' | 'tedarikci'> & {
+  talep: Omit<ParcaTalebi, 'parca'> & { parca: Parca };
+  tedarikci: Tedarikci;
+};
+
 export interface Tedarikci {
   id: number;
   ad: string;
@@ -214,6 +232,19 @@ export interface Siparis {
   talep?: ParcaTalebi;
   tedarikci?: Tedarikci;
 }
+
+/** GET /bakim — genel listede kaydın hangi araca ait olduğu da görünür. */
+export type BakimDetay = Omit<BakimKaydi, 'ihaArac' | 'parca' | 'kullanici'> & {
+  ihaArac: IhaAraci;
+  parca: Parca;
+  kullanici: HareketKullanicisiKisa;
+};
+
+/** GET /bakim/arac/:id — araç zaten belli, satırlar araçsız döner. */
+export type BakimGecmisi = Omit<BakimKaydi, 'ihaArac' | 'parca' | 'kullanici'> & {
+  parca: Parca;
+  kullanici: HareketKullanicisiKisa;
+};
 
 export interface BakimKaydi {
   id: number;
