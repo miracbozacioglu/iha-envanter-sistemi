@@ -3,6 +3,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+import { AracDetayPage } from './pages/AracDetayPage';
+import { AraclarPage } from './pages/AraclarPage';
+import { BakimPage } from './pages/BakimPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { KullanicilarPage } from './pages/KullanicilarPage';
@@ -10,13 +13,17 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { ParcaDetayPage } from './pages/ParcaDetayPage';
 import { ParcaFormPage } from './pages/ParcaFormPage';
 import { ParcalarPage } from './pages/ParcalarPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
+import { SiparislerPage } from './pages/SiparislerPage';
 import { StokHareketleriPage } from './pages/StokHareketleriPage';
 import { StokPage } from './pages/StokPage';
+import { TalepDetayPage } from './pages/TalepDetayPage';
+import { TalepFormPage } from './pages/TalepFormPage';
+import { TaleplerPage } from './pages/TaleplerPage';
 import { TanimlamalarPage } from './pages/TanimlamalarPage';
 import type { Rol } from './types';
 
 const YONETICI: readonly Rol[] = ['YONETICI'];
+const TEKNISYEN: readonly Rol[] = ['TEKNISYEN'];
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,26 +79,23 @@ export default function App() {
               />
               <Route path="parcalar/:id" element={<ParcaDetayPage />} />
 
+              {/* "yeni" statik segmenti ":id" den önce gelmeli. */}
+              <Route path="talepler" element={<TaleplerPage />} />
+              {/* Talep açmak backend'de yalnızca TEKNISYEN'e açık. */}
               <Route
-                path="talepler"
+                path="talepler/yeni"
                 element={
-                  <PlaceholderPage
-                    baslik="Parça Talepleri"
-                    aciklama="Talep açma, onay/red akışı ve durum takibi (BEKLIYOR → ONAYLANDI → SIPARIS_VERILDI → TESLIM_ALINDI) burada yönetilecek."
-                  />
+                  <ProtectedRoute roller={TEKNISYEN}>
+                    <TalepFormPage />
+                  </ProtectedRoute>
                 }
               />
+              <Route path="talepler/:id" element={<TalepDetayPage />} />
 
-              <Route
-                path="araclar"
-                element={
-                  <PlaceholderPage
-                    baslik="Araçlar & Bakım"
-                    aciklama="İHA araçlarının kuyruk numarası bazında listesi, bakım geçmişi ve parça değiştir/tamir kayıtları burada olacak."
-                    gun="Gün 9"
-                  />
-                }
-              />
+              {/* Görüntüleme ve bakım işlemleri her iki role açık. */}
+              <Route path="araclar" element={<AraclarPage />} />
+              <Route path="araclar/:id" element={<AracDetayPage />} />
+              <Route path="bakim" element={<BakimPage />} />
 
               {/* Yalnızca yönetici */}
               {/* "hareketler" statik segmenti, stok altındaki diğer yollardan önce. */}
@@ -116,11 +120,7 @@ export default function App() {
                 path="siparisler"
                 element={
                   <ProtectedRoute roller={YONETICI}>
-                    <PlaceholderPage
-                      baslik="Siparişler"
-                      aciklama="Onaylanmış taleplerden sipariş oluşturma, tedarikçi seçimi ve teslim alma adımları burada olacak."
-                      gun="Gün 9"
-                    />
+                    <SiparislerPage />
                   </ProtectedRoute>
                 }
               />

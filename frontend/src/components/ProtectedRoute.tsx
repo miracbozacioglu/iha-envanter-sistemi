@@ -27,13 +27,21 @@ export function ProtectedRoute({ children, roller }: ProtectedRouteProps) {
   }
 
   if (!hasRole(roller)) {
-    return <YetkisizEkrani />;
+    return <YetkisizEkrani roller={roller} />;
   }
 
   return <>{children}</>;
 }
 
-function YetkisizEkrani() {
+const ROL_ADI: Record<Rol, string> = {
+  YONETICI: 'yönetici',
+  TEKNISYEN: 'teknisyen',
+};
+
+function YetkisizEkrani({ roller }: { roller?: readonly Rol[] }) {
+  // Hangi rolün gerektiğini yazalım: sayfa artık hem yönetici hem teknisyen
+  // kısıtlı olabiliyor, sabit "yönetici" metni yanıltıcı olurdu.
+  const izinliler = (roller ?? []).map((rol) => ROL_ADI[rol]).join(' veya ');
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <div className="panel relative max-w-md px-8 py-10 text-center">
@@ -46,8 +54,10 @@ function YetkisizEkrani() {
         <p className="label-micro mt-6 text-danger-400">Erişim reddedildi</p>
         <h2 className="mt-3 text-xl font-semibold text-fog-100">Bu bölüm yetkiniz dışında</h2>
         <p className="mt-2.5 text-sm leading-relaxed text-fog-500">
-          Bu sayfa yalnızca yönetici rolündeki kullanıcılara açık. Erişim gerekiyorsa sistem
-          yöneticisiyle iletişime geçin.
+          {izinliler
+            ? `Bu sayfa yalnızca ${izinliler} rolündeki kullanıcılara açık.`
+            : 'Bu sayfaya erişim yetkiniz yok.'}{' '}
+          Erişim gerekiyorsa sistem yöneticisiyle iletişime geçin.
         </p>
 
         <Link
