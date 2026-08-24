@@ -5,10 +5,20 @@ node_modules/
 dist/
 build/
 
-# Environment variables
+# Prisma'nin urettigi istemci kodu (schema'dan yeniden uretilir)
+generated/
+
+# Environment variables — .env.example DISINDA hicbir .env dosyasi commit edilmez
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+
+# Sertifika / anahtar dosyalari asla versiyon kontrolune girmez
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
 
 # IDE & Editor files
 .vscode/

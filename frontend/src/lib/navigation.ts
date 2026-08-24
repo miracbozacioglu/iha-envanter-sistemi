@@ -2,7 +2,7 @@ import {
   Boxes,
   ClipboardList,
   LayoutDashboard,
-  PlaneTakeoff,
+  Drone,
   SlidersHorizontal,
   Truck,
   Users,
@@ -53,7 +53,7 @@ export const NAV_GROUPS: NavGroup[] = [
       {
         to: '/araclar',
         label: 'Araçlar & Bakım',
-        icon: PlaneTakeoff,
+        icon: Drone,
         aciklama: 'İHA araçları ve bakım kayıtları',
       },
     ],

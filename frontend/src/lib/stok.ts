@@ -9,6 +9,8 @@ export interface StokDurumBilgisi {
   sinif: string;
   /** Küçük durum noktası rengi. */
   nokta: string;
+  /** Yalnızca metin rengi — rozet dışında kullanmak için. */
+  metin: string;
 }
 
 /**
@@ -27,18 +29,21 @@ export const STOK_DURUM_BILGISI: Record<StokDurumu, StokDurumBilgisi> = {
     etiket: 'Tükendi',
     sinif: 'border-danger-500/35 bg-danger-900/45 text-danger-400',
     nokta: 'bg-danger-400',
+    metin: 'text-danger-400',
   },
   KRITIK: {
     durum: 'KRITIK',
     etiket: 'Kritik',
     sinif: 'border-alert-400/30 bg-alert-400/10 text-alert-400',
     nokta: 'bg-alert-400',
+    metin: 'text-alert-400',
   },
   YETERLI: {
     durum: 'YETERLI',
     etiket: 'Yeterli',
     sinif: 'border-signal-500/30 bg-signal-900/50 text-signal-400',
     nokta: 'bg-signal-400',
+    metin: 'text-signal-400',
   },
 };
 

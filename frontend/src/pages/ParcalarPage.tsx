@@ -274,7 +274,7 @@ function Araclar(props: AraclarProps) {
         {props.yonetici && (
           <Link
             to="/parcalar/yeni"
-            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400"
+            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400"
           >
             <Plus className="size-4" strokeWidth={2.5} />
             Yeni Parça

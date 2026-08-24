@@ -1,4 +1,4 @@
-import { PlaneTakeoff, Replace, Wrench, X } from 'lucide-react';
+import { Drone, Replace, Wrench, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bos, Hata, Yukleniyor } from '../components/ui/DurumKutusu';
@@ -100,7 +100,7 @@ export function BakimPage() {
           to="/araclar"
           className="inline-flex items-center gap-2 rounded-lg border border-ink-600 bg-ink-800 px-3.5 py-2.5 text-sm text-fog-300 transition hover:border-signal-500/40 hover:text-fog-100 lg:ml-auto"
         >
-          <PlaneTakeoff className="size-4" strokeWidth={1.75} />
+          <Drone className="size-4" strokeWidth={1.75} />
           Araç listesi
         </Link>
       </div>

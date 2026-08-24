@@ -1,4 +1,4 @@
-import { Boxes, PlaneTakeoff, Radar, Truck, Warehouse, type LucideIcon } from 'lucide-react';
+import { Drone, Radar, Tags, Truck, Warehouse, type LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { KaynakBolumu } from '../components/tanimlar/KaynakBolumu';
 import {
@@ -20,9 +20,9 @@ interface Sekme {
 }
 
 const SEKMELER: Sekme[] = [
-  { anahtar: 'kategoriler', etiket: 'Kategoriler', ikon: Boxes },
+  { anahtar: 'kategoriler', etiket: 'Kategoriler', ikon: Tags },
   { anahtar: 'modeller', etiket: 'İHA Modelleri', ikon: Radar },
-  { anahtar: 'araclar', etiket: 'İHA Araçları', ikon: PlaneTakeoff },
+  { anahtar: 'araclar', etiket: 'İHA Araçları', ikon: Drone },
   { anahtar: 'tedarikciler', etiket: 'Tedarikçiler', ikon: Truck },
   { anahtar: 'depolar', etiket: 'Depolar', ikon: Warehouse },
 ];

@@ -1,4 +1,4 @@
-import { ArrowRight, History, PlaneTakeoff, Search, X } from 'lucide-react';
+import { ArrowRight, Drone, Search, Wrench, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bos, Hata, Yukleniyor } from '../components/ui/DurumKutusu';
@@ -87,7 +87,7 @@ export function AraclarPage() {
           to="/bakim"
           className="inline-flex items-center gap-2 rounded-lg border border-ink-600 bg-ink-800 px-3.5 py-2.5 text-sm text-fog-300 transition hover:border-signal-500/40 hover:text-fog-100 lg:ml-auto"
         >
-          <History className="size-4" strokeWidth={1.75} />
+          <Wrench className="size-4" strokeWidth={1.75} />
           Tüm bakım kayıtları
         </Link>
       </div>
@@ -135,7 +135,7 @@ function AracKarti({ arac }: { arac: IhaAraci }) {
     >
       <div className="flex items-start justify-between gap-3">
         <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-signal-500/25 bg-signal-900/40 text-signal-400">
-          <PlaneTakeoff className="size-5" strokeWidth={1.75} />
+          <Drone className="size-5" strokeWidth={1.75} />
         </span>
         <Rozet ton={aracDurumTonu(arac.durum)} mono>
           {arac.durum}

@@ -9,6 +9,11 @@ export interface DurumBilgisi {
   /** Bağlantı çizgisinin tamamlanmış hali. */
   cizgi: string;
   metin: string;
+  /**
+   * Grafik için ham renk değeri — recharts sınıf adı değil değer istiyor.
+   * Sabit hex yerine belirtece bağlı: tema değişince grafik de dönsün.
+   */
+  renk: string;
 }
 
 /**
@@ -22,6 +27,7 @@ export const TALEP_DURUM_BILGISI: Record<TalepDurumu, DurumBilgisi> = {
     dolu: 'border-alert-400/60 bg-alert-400/15 text-alert-400',
     cizgi: 'bg-alert-400/40',
     metin: 'text-alert-400',
+    renk: 'var(--color-alert-400)',
   },
   ONAYLANDI: {
     etiket: 'Onaylandı',
@@ -29,6 +35,7 @@ export const TALEP_DURUM_BILGISI: Record<TalepDurumu, DurumBilgisi> = {
     dolu: 'border-signal-500/60 bg-signal-900/70 text-signal-400',
     cizgi: 'bg-signal-500/40',
     metin: 'text-signal-400',
+    renk: 'var(--color-signal-400)',
   },
   REDDEDILDI: {
     etiket: 'Reddedildi',
@@ -36,6 +43,7 @@ export const TALEP_DURUM_BILGISI: Record<TalepDurumu, DurumBilgisi> = {
     dolu: 'border-danger-500/60 bg-danger-900/70 text-danger-400',
     cizgi: 'bg-danger-500/40',
     metin: 'text-danger-400',
+    renk: 'var(--color-danger-400)',
   },
   SIPARIS_VERILDI: {
     etiket: 'Sipariş verildi',
@@ -43,6 +51,7 @@ export const TALEP_DURUM_BILGISI: Record<TalepDurumu, DurumBilgisi> = {
     dolu: 'border-info-500/60 bg-info-900/70 text-info-400',
     cizgi: 'bg-info-500/40',
     metin: 'text-info-400',
+    renk: 'var(--color-info-400)',
   },
   TESLIM_ALINDI: {
     etiket: 'Teslim alındı',
@@ -50,6 +59,7 @@ export const TALEP_DURUM_BILGISI: Record<TalepDurumu, DurumBilgisi> = {
     dolu: 'border-success-500/60 bg-success-900/70 text-success-400',
     cizgi: 'bg-success-500/40',
     metin: 'text-success-400',
+    renk: 'var(--color-success-400)',
   },
 };
 

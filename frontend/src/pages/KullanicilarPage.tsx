@@ -32,7 +32,7 @@ export function KullanicilarPage() {
             setDuzenlenen(null);
             setFormAcik(true);
           }}
-          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400"
+          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400"
         >
           <Plus className="size-4" strokeWidth={2.5} />
           Yeni Kullanıcı
@@ -221,7 +221,7 @@ function SilmeModali({ kullanici, onKapat }: { kullanici: Kullanici; onKapat: ()
               type="button"
               onClick={() => void pasifeAl()}
               disabled={guncelle.isPending}
-              className="inline-flex items-center gap-2 rounded-lg border border-alert-400/40 bg-alert-400/10 px-4 py-2.5 text-sm font-semibold text-alert-400 transition hover:bg-alert-400/20 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-lg border border-alert-400/40 bg-alert-400/10 px-4 py-2.5 text-sm font-semibold text-alert-300 transition hover:bg-alert-400/20 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {guncelle.isPending ? (
                 <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />
@@ -236,7 +236,7 @@ function SilmeModali({ kullanici, onKapat }: { kullanici: Kullanici; onKapat: ()
             type="button"
             onClick={() => void silmeyiOnayla()}
             disabled={sil.isPending}
-            className="rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {sil.isPending ? 'Siliniyor…' : 'Evet, sil'}
           </button>
@@ -438,7 +438,7 @@ function KullaniciFormu({ kayit, onKapat }: { kayit: Kullanici | null; onKapat: 
         <button
           type="submit"
           disabled={kaydediyor}
-          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {kaydediyor && <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />}
           {duzenleme ? 'Kaydet' : 'Oluştur'}

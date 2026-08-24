@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class StokGirisDto {
   @ApiProperty({
@@ -25,6 +33,7 @@ export class StokGirisDto {
   })
   @IsInt({ message: 'miktar tam sayi olmalidir.' })
   @Min(1, { message: 'miktar en az 1 olmalidir.' })
+  @Max(1000000, { message: 'miktar en fazla 1000000 olabilir.' })
   miktar: number;
 
   @ApiPropertyOptional({
@@ -33,6 +42,7 @@ export class StokGirisDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 
   @ApiPropertyOptional({
@@ -44,5 +54,6 @@ export class StokGirisDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'rafKodu bos birakilamaz.' })
+  @MaxLength(50, { message: 'rafKodu en fazla 50 karakter olabilir.' })
   rafKodu?: string;
 }

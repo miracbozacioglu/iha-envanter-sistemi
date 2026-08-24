@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateIhaAraciDto {
   @ApiProperty({
@@ -8,6 +15,7 @@ export class CreateIhaAraciDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Kuyruk numarasi bos birakilamaz.' })
+  @MaxLength(50, { message: 'Kuyruk numarasi en fazla 50 karakter olabilir.' })
   kuyrukNo: string;
 
   @ApiProperty({
@@ -24,6 +32,7 @@ export class CreateIhaAraciDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(50, { message: 'Durum en fazla 50 karakter olabilir.' })
   durum?: string;
 
   @ApiPropertyOptional({
@@ -32,5 +41,6 @@ export class CreateIhaAraciDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 }

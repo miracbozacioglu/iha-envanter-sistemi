@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: iha-envanter-backend
+    container_name: iha-backend
+    # DATABASE_URL, DIRECT_URL, JWT_SECRET, JWT_EXPIRES_IN buradan geliyor.
+    # Veritabani disarida (Supabase), bu yuzden ayri bir postgres servisi yok.
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # Tarayici frontend'i :8080 uzerinden aciyor; CORS bu kaynaga izin vermeli.
+      # Vite dev sunuculari da listede kalsin ki compose calisirken `npm run dev`
+      # ile gelistirme yapmak bozulmasin.
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080,http://localhost:5174,http://localhost:5173}
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Vite degiskenleri derleme aninda gomuluyor; bu yuzden `environment:`
+        # degil `args:` kullaniyoruz. Adres tarayicidan erisilebilir olmali,
+        # dolayisiyla `http://backend:3000` degil `http://localhost:3000`.
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    image: iha-envanter-frontend
+    container_name: iha-frontend
+    ports:
+      - '8080:80'
+    depends_on:
+      - backend
+    restart: unless-stopped

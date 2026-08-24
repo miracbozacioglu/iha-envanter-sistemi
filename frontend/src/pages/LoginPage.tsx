@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { BrandMark } from '../components/ui/BrandMark';
 import { CornerFrame } from '../components/ui/CornerFrame';
 import { FullScreenLoader } from '../components/ui/FullScreenLoader';
+import { TemaDugmesi } from '../components/ui/TemaDugmesi';
 import { useAuth } from '../hooks/useAuth';
 import { hataMesaji } from '../lib/api';
 
@@ -59,6 +60,11 @@ export function LoginPage() {
     <div className="relative grid min-h-full place-items-center overflow-hidden bg-ink-950 px-4 py-10">
       <ArkaPlan />
 
+      {/* Giriş ekranı Layout'un dışında; tema anahtarı burada da dursun. */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <TemaDugmesi />
+      </div>
+
       <div className="relative w-full max-w-[26rem]">
         {/* Marka bloğu — kartın üstünde, nefes alan bir alan */}
         <div className="mb-8 flex flex-col items-center text-center">
@@ -75,7 +81,7 @@ export function LoginPage() {
           <p className="label-micro mt-2.5">Bakım &amp; Lojistik Komuta Paneli</p>
         </div>
 
-        <div className="panel relative bg-ink-900/80 px-7 py-8 shadow-2xl shadow-black/60 backdrop-blur-xl sm:px-8">
+        <div className="panel relative bg-ink-900/80 px-7 py-8 lift-lg backdrop-blur-xl sm:px-8">
           <CornerFrame size={20} />
 
           <div className="mb-7 flex items-baseline justify-between">
@@ -145,7 +151,7 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group flex w-full items-center justify-center gap-2 rounded-lg bg-signal-500 py-3 text-sm font-semibold text-ink-950 transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+              className="group flex w-full items-center justify-center gap-2 rounded-lg bg-signal-500 py-3 text-sm font-semibold text-onbright transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? (
                 <>

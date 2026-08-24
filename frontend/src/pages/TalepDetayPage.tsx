@@ -163,7 +163,7 @@ function Icerik({ talep }: { talep: TalepDetay }) {
                 type="button"
                 onClick={() => void onaylaTiklandi()}
                 disabled={onayla.isPending}
-                className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-5 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {onayla.isPending ? (
                   <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />
@@ -190,7 +190,7 @@ function Icerik({ talep }: { talep: TalepDetay }) {
             <button
               type="button"
               onClick={() => setSiparisAcik(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-5 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-info-400"
+              className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-5 py-2.5 text-sm font-semibold text-onbright transition hover:bg-info-400"
             >
               <Truck className="size-4" strokeWidth={2.25} />
               Sipariş oluştur
@@ -244,7 +244,7 @@ function Icerik({ talep }: { talep: TalepDetay }) {
               <button
                 type="button"
                 onClick={() => setTeslimAcik(true)}
-                className="inline-flex items-center gap-2 rounded-lg bg-success-500 px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-success-400"
+                className="inline-flex items-center gap-2 rounded-lg bg-success-500 px-5 py-2.5 text-sm font-semibold text-onbright transition hover:bg-success-400"
               >
                 <PackageCheck className="size-4" strokeWidth={2.25} />
                 Teslim al
@@ -367,7 +367,7 @@ function ReddetModali({ talep, onKapat }: { talep: TalepDetay; onKapat: () => vo
           <button
             type="submit"
             disabled={reddet.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {reddet.isPending && <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />}
             Reddet
@@ -502,7 +502,7 @@ function SiparisModali({ talep, onKapat }: { talep: TalepDetay; onKapat: () => v
           <button
             type="submit"
             disabled={olustur.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-4 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-info-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-info-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {olustur.isPending && (
               <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />
@@ -589,7 +589,7 @@ export function TeslimAlModali({
             type="button"
             onClick={() => void onayla()}
             disabled={teslimAl.isPending}
-            className="inline-flex items-center gap-2 rounded-lg bg-success-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-success-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-lg bg-success-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-success-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {teslimAl.isPending ? (
               <LoaderCircle className="size-4 animate-spin" strokeWidth={2.25} />

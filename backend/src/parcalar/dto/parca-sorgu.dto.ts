@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import { SayfalamaDto } from './sayfalama.dto';
 
 export class ParcaSorguDto extends SayfalamaDto {
@@ -10,6 +10,7 @@ export class ParcaSorguDto extends SayfalamaDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(100, { message: 'Arama metni en fazla 100 karakter olabilir.' })
   search?: string;
 
   @ApiPropertyOptional({

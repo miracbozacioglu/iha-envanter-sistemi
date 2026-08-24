@@ -4,7 +4,7 @@ import {
   ArrowUpRight,
   Boxes,
   PencilLine,
-  PlaneTakeoff,
+  Drone,
   TriangleAlert,
   Warehouse,
 } from 'lucide-react';
@@ -266,7 +266,7 @@ function UyumluModeller({ parca }: { parca: ParcaDetay }) {
   return (
     <Bolum
       baslik="Uyumlu İHA modelleri"
-      ikon={<PlaneTakeoff className="size-4" strokeWidth={1.75} />}
+      ikon={<Drone className="size-4" strokeWidth={1.75} />}
       sagUst={
         <span className="font-mono text-xs text-fog-500 tabular-nums">
           {parca.uyumluluklar.length}

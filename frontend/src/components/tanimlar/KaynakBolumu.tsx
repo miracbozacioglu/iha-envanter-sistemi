@@ -76,7 +76,7 @@ export function KaynakBolumu<T extends Kimlikli>({
         <button
           type="button"
           onClick={ekle}
-          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400"
+          className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400"
         >
           <Plus className="size-4" strokeWidth={2.5} />
           Yeni {tekil}
@@ -198,7 +198,7 @@ export function KaynakBolumu<T extends Kimlikli>({
                 type="button"
                 onClick={() => void silmeyiOnayla()}
                 disabled={sil.isPending}
-                className="rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-lg bg-danger-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-danger-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {sil.isPending ? 'Siliniyor…' : 'Evet, sil'}
               </button>

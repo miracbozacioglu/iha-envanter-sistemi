@@ -334,7 +334,7 @@ function IslemFormuPaneli({ tip }: { tip: HareketTipi }) {
           <button
             type="submit"
             disabled={isSubmitting || etkinDepoId === null}
-            className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-ink-950 transition disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-onbright transition disabled:cursor-not-allowed disabled:opacity-60 ${
               giris ? 'bg-signal-500 hover:bg-signal-400' : 'bg-alert-400 hover:bg-alert-300'
             }`}
           >

@@ -1,0 +1,23 @@
+# Bagimliliklar imaj icinde npm ci ile kurulur
+node_modules
+
+# Derleme ciktisi imaj icinde uretilir
+dist
+
+# .env dosyalari disarida: adres yalnizca build arg ile belirlensin,
+# yerel bir .env sessizce derlemeyi etkilemesin.
+.env
+.env.*
+!.env.example
+
+# Versiyon kontrolu / editor / arac dosyalari
+.git
+.gitignore
+.vscode
+.idea
+.agents
+.claude
+.windsurf
+
+Dockerfile
+.dockerignore

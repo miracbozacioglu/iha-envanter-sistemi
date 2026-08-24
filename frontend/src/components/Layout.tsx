@@ -5,12 +5,19 @@ import { useAuth } from '../hooks/useAuth';
 import { aktifNavItem, NAV_GROUPS } from '../lib/navigation';
 import type { Kullanici } from '../types';
 import { BrandMark } from './ui/BrandMark';
+import { TemaDugmesi } from './ui/TemaDugmesi';
 
 export function Layout() {
   const { user, logout, hasRole } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [menuAcik, setMenuAcik] = useState(false);
+  /**
+   * Daraltma yalnızca masaüstünde anlamlı; mobilde sidebar zaten çekmece.
+   * Bu yüzden daraltma sınıfları hep `lg:` önekiyle uygulanıyor.
+   */
+  const [daralt, setDaralt] = useState(false);
+  const gizliDaralt = daralt ? 'lg:hidden' : '';
 
   const aktif = aktifNavItem(location.pathname);
 
@@ -33,20 +40,26 @@ export function Layout() {
           type="button"
           aria-label="Menüyü kapat"
           onClick={() => setMenuAcik(false)}
-          className="fixed inset-0 z-30 bg-ink-950/80 backdrop-blur-sm lg:hidden"
+          className="scrim fixed inset-0 z-30 backdrop-blur-sm lg:hidden"
         />
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 shrink-0 flex-col border-r border-ink-700 bg-ink-900 transition-transform duration-200 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 shrink-0 flex-col border-r border-ink-700 bg-ink-900 transition-[transform,width] duration-200 lg:static lg:translate-x-0 ${
           menuAcik ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        } ${daralt ? 'lg:w-[4.5rem]' : 'lg:w-72'}`}
       >
-        <div className="flex h-16 items-center gap-3 border-b border-ink-700 px-5">
-          <span className="grid size-9 place-items-center rounded-lg border border-signal-500/30 bg-signal-900/50 text-signal-400">
+        <div
+          className={`flex h-16 items-center gap-3 border-b border-ink-700 px-5 ${
+            daralt ? 'lg:justify-center lg:px-0' : ''
+          }`}
+        >
+          <span
+            className={`grid size-9 shrink-0 place-items-center rounded-lg border border-signal-500/30 bg-signal-900/50 text-signal-400 ${gizliDaralt}`}
+          >
             <BrandMark className="size-5" />
           </span>
-          <span className="min-w-0 flex-1">
+          <span className={`min-w-0 flex-1 ${gizliDaralt}`}>
             <span className="block truncate font-mono text-[0.9375rem] font-semibold tracking-[0.14em] text-fog-100">
               İHA ENVANTER
             </span>
@@ -54,6 +67,8 @@ export function Layout() {
               Bakım &amp; Lojistik
             </span>
           </span>
+
+          {/* Mobilde çekmeceyi kapatır */}
           <button
             type="button"
             onClick={() => setMenuAcik(false)}
@@ -62,12 +77,28 @@ export function Layout() {
           >
             <X className="size-4" />
           </button>
+
+          {/* Masaüstünde daralt/genişlet. Daralınca başlıkta tek kalır ve ortalanır. */}
+          <button
+            type="button"
+            onClick={() => setDaralt((d) => !d)}
+            aria-label={daralt ? 'Menüyü genişlet' : 'Menüyü daralt'}
+            aria-expanded={!daralt}
+            title={daralt ? 'Menüyü genişlet' : 'Menüyü daralt'}
+            className="hidden size-9 shrink-0 place-items-center rounded-lg border border-ink-700 text-fog-500 transition hover:border-signal-500/40 hover:bg-ink-800 hover:text-fog-100 lg:grid"
+          >
+            <Menu className="size-4.5" strokeWidth={2} />
+          </button>
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-5">
           {gruplar.map((grup) => (
             <div key={grup.baslik} className="mb-6 last:mb-0">
-              <p className="label-micro px-3 pb-2.5">{grup.baslik}</p>
+              <p className={`label-micro px-3 pb-2.5 ${gizliDaralt}`}>{grup.baslik}</p>
+              {/* Daralt modunda başlık yerine ince bir ayraç kalsın */}
+              {daralt && (
+                <span aria-hidden="true" className="mx-auto mb-2.5 hidden h-px w-6 bg-ink-700 lg:block" />
+              )}
               <ul className="space-y-0.5">
                 {grup.items.map((item) => (
                   <li key={item.to}>
@@ -76,22 +107,31 @@ export function Layout() {
                       end={item.to === '/'}
                       // Mobil çekmece, gidilen sayfanın üstünde açık kalmasın.
                       onClick={() => setMenuAcik(false)}
+                      // Daralt modunda metin gizli; ad yine de erişilebilir olsun.
+                      title={daralt ? item.label : undefined}
                       className={({ isActive }) =>
-                        `group relative flex items-center gap-3 rounded-lg py-2.5 pr-3 pl-4 text-sm transition ${
+                        `group relative flex items-center gap-3 rounded-lg border py-2.5 pr-3 pl-4 text-sm transition ${
                           isActive
-                            ? 'bg-signal-500/10 font-medium text-fog-100'
-                            : 'text-fog-500 hover:bg-ink-800 hover:text-fog-300'
+                            ? 'border-transparent bg-signal-500/10 font-medium text-fog-100'
+                            : 'border-transparent text-fog-500 hover:bg-ink-800 hover:text-fog-300'
+                        } ${
+                          daralt
+                            ? `lg:justify-center lg:px-0 ${
+                                isActive ? 'lg:border-signal-500/30' : ''
+                              }`
+                            : ''
                         }`
                       }
                     >
                       {({ isActive }) => (
                         <>
-                          {/* Aktif göstergesi: sol kenarda ince sinyal çubuğu */}
+                          {/* Aktif göstergesi: sol kenarda ince sinyal çubuğu.
+                              Daralt modunda yerini ikon çevresindeki çerçeve alıyor. */}
                           <span
                             aria-hidden="true"
                             className={`absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-r bg-signal-400 transition-opacity ${
                               isActive ? 'opacity-100' : 'opacity-0'
-                            }`}
+                            } ${gizliDaralt}`}
                           />
                           <item.icon
                             className={`size-[1.125rem] shrink-0 transition-colors ${
@@ -99,7 +139,7 @@ export function Layout() {
                             }`}
                             strokeWidth={1.75}
                           />
-                          <span className="truncate">{item.label}</span>
+                          <span className={`truncate ${gizliDaralt}`}>{item.label}</span>
                         </>
                       )}
                     </NavLink>
@@ -110,10 +150,19 @@ export function Layout() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 border-t border-ink-700 px-5 py-3.5">
-          <Radio className="size-3.5 shrink-0 text-signal-400 hud-pulse" strokeWidth={2} />
-          <span className="label-micro text-[0.625rem]">Sistem çevrimiçi</span>
-          <span className="ml-auto font-mono text-[0.625rem] text-fog-700">v0.7</span>
+        <div className="border-t border-ink-700 px-5 py-3.5 lg:px-3">
+          <div className={`flex items-center gap-2 ${gizliDaralt}`}>
+            <Radio className="size-3.5 shrink-0 text-signal-400 hud-pulse" strokeWidth={2} />
+            <span className="label-micro text-[0.625rem]">Sistem çevrimiçi</span>
+            <span className="ml-auto font-mono text-[0.625rem] text-fog-700">v0.7</span>
+          </div>
+
+          {/* Daralınca metin sığmıyor; sinyal göstergesi tek başına kalsın. */}
+          {daralt && (
+            <div className="hidden justify-center lg:flex" title="Sistem çevrimiçi">
+              <Radio className="size-3.5 text-signal-400 hud-pulse" strokeWidth={2} />
+            </div>
+          )}
         </div>
       </aside>
 
@@ -138,6 +187,8 @@ export function Layout() {
           <Saat />
 
           {user && <KullaniciRozeti user={user} />}
+
+          <TemaDugmesi />
 
           <button
             type="button"

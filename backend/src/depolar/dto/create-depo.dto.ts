@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateDepoDto {
   @ApiProperty({
@@ -8,6 +8,7 @@ export class CreateDepoDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Depo adi bos birakilamaz.' })
+  @MaxLength(100, { message: 'Depo adi en fazla 100 karakter olabilir.' })
   ad: string;
 
   @ApiPropertyOptional({
@@ -16,5 +17,6 @@ export class CreateDepoDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(200, { message: 'Lokasyon en fazla 200 karakter olabilir.' })
   lokasyon?: string;
 }

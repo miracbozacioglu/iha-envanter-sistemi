@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateParcaDto {
   @ApiProperty({
@@ -8,6 +16,7 @@ export class CreateParcaDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Parca kodu bos birakilamaz.' })
+  @MaxLength(50, { message: 'Parca kodu en fazla 50 karakter olabilir.' })
   kod: string;
 
   @ApiProperty({
@@ -16,6 +25,7 @@ export class CreateParcaDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Parca adi bos birakilamaz.' })
+  @MaxLength(150, { message: 'Parca adi en fazla 150 karakter olabilir.' })
   ad: string;
 
   @ApiPropertyOptional({
@@ -24,6 +34,7 @@ export class CreateParcaDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 
   @ApiPropertyOptional({
@@ -34,6 +45,7 @@ export class CreateParcaDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Birim bos birakilamaz.' })
+  @MaxLength(20, { message: 'Birim en fazla 20 karakter olabilir.' })
   birim?: string;
 
   @ApiPropertyOptional({
@@ -45,6 +57,7 @@ export class CreateParcaDto {
   @IsOptional()
   @IsInt({ message: 'kritikSeviye tam sayi olmalidir.' })
   @Min(0, { message: 'kritikSeviye 0 veya daha buyuk olmalidir.' })
+  @Max(1000000, { message: 'kritikSeviye en fazla 1000000 olabilir.' })
   kritikSeviye?: number;
 
   @ApiProperty({
