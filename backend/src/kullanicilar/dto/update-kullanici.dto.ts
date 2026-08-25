@@ -1,5 +1,11 @@
 import { ApiPropertyOptional, OmitType, PartialType } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { CreateKullaniciDto } from './create-kullanici.dto';
 
 /**
@@ -18,6 +24,9 @@ export class UpdateKullaniciDto extends PartialType(
   @IsOptional()
   @IsString()
   @MinLength(6, { message: 'Sifre en az 6 karakter olmalidir.' })
+  @MaxLength(72, {
+    message: 'Sifre en fazla 72 karakter olabilir (bcrypt siniri).',
+  })
   sifre?: string;
 
   @ApiPropertyOptional({

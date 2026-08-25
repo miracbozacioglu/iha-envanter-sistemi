@@ -33,14 +33,14 @@ export function Modal({ baslik, altBaslik, onKapat, children, genis = false }: M
         type="button"
         aria-label="Kapat"
         onClick={onKapat}
-        className="fixed inset-0 cursor-default bg-ink-950/80 backdrop-blur-sm"
+        className="scrim fixed inset-0 cursor-default backdrop-blur-sm"
       />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-label={baslik}
-        className={`panel relative my-auto w-full bg-ink-900 shadow-2xl shadow-black/70 ${
+        className={`panel relative my-auto w-full bg-ink-900 lift-lg ${
           genis ? 'max-w-2xl' : 'max-w-lg'
         }`}
       >

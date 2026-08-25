@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateTalepDto {
   @ApiProperty({
@@ -17,6 +24,7 @@ export class CreateTalepDto {
   })
   @IsInt({ message: 'miktar tam sayi olmalidir.' })
   @Min(1, { message: 'miktar en az 1 olmalidir.' })
+  @Max(1000000, { message: 'miktar en fazla 1000000 olabilir.' })
   miktar: number;
 
   @ApiPropertyOptional({
@@ -25,5 +33,6 @@ export class CreateTalepDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 }

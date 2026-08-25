@@ -18,6 +18,28 @@ const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString }),
 });
 
+/**
+ * Seed sifreleri ortam degiskeninden gelir. Kaynak koda gomulu bir yonetici
+ * sifresi, depoyu goren herkesin uretim veritabanina girebilmesi demektir.
+ * Degisken tanimsizsa seed calismaz — sessizce bilinen bir sifre atamaktansa
+ * durup uyarmasi tercih edildi.
+ */
+function sifreOku(degisken: string): string {
+  const deger = process.env[degisken];
+
+  if (!deger || deger.length < 8) {
+    throw new Error(
+      `${degisken} tanimli degil veya 8 karakterden kisa. ` +
+        'Seed calistirmadan once backend/.env dosyasina ekleyin.',
+    );
+  }
+
+  return deger;
+}
+
+const YONETICI_SIFRE = sifreOku('SEED_YONETICI_SIFRE');
+const TEKNISYEN_SIFRE = sifreOku('SEED_TEKNISYEN_SIFRE');
+
 async function main() {
   const yonetici = await prisma.kullanici.upsert({
     where: { email: 'admin@iha.com' },
@@ -26,7 +48,7 @@ async function main() {
       ad: 'Sistem',
       soyad: 'Yonetici',
       email: 'admin@iha.com',
-      sifreHash: await bcrypt.hash('Admin123!', SALT_ROUNDS),
+      sifreHash: await bcrypt.hash(YONETICI_SIFRE, SALT_ROUNDS),
       rol: Rol.YONETICI,
       unvan: 'Depo Sorumlusu',
       aktif: true,
@@ -41,7 +63,7 @@ async function main() {
       ad: 'Ahmet',
       soyad: 'Teknisyen',
       email: 'teknisyen@iha.com',
-      sifreHash: await bcrypt.hash('Teknisyen123!', SALT_ROUNDS),
+      sifreHash: await bcrypt.hash(TEKNISYEN_SIFRE, SALT_ROUNDS),
       rol: Rol.TEKNISYEN,
       unvan: 'Bakim Teknisyeni',
       aktif: true,
@@ -71,8 +93,9 @@ main()
   .then(async () => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error('Seed hatasi:', e);
+  .catch(async (e: unknown) => {
+    // Ham hata nesnesi stack trace ve baglanti dizesi sizdirabilir; sadece mesaj.
+    console.error('Seed hatasi:', e instanceof Error ? e.message : e);
     await prisma.$disconnect();
     process.exit(1);
   });

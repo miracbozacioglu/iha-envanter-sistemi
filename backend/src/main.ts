@@ -6,19 +6,40 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // CORS bir BEYAZ LISTEDIR. CORS_ORIGIN virgulle ayrilmis kaynak listesi
+  // bekler; bos/whitespace girdiler ayiklanir. '*' bilerek desteklenmiyor:
+  // tanimlanirsa asagidaki kontrol acilisi durdurur, sessizce her yere
+  // acilmis bir API ile calismayalim.
+  const izinliKaynaklar = (process.env.CORS_ORIGIN ?? '')
+    .split(',')
+    .map((kaynak) => kaynak.trim())
+    .filter(Boolean);
+
+  if (izinliKaynaklar.includes('*')) {
+    throw new Error(
+      "CORS_ORIGIN '*' olamaz. Izin verilecek kaynaklari tek tek listeleyin.",
+    );
+  }
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(',') ?? [
-      'http://localhost:5174',
-      'http://127.0.0.1:5174',
-    ],
+    origin:
+      izinliKaynaklar.length > 0
+        ? izinliKaynaklar
+        : ['http://localhost:5174', 'http://127.0.0.1:5174'],
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(
     new ValidationPipe({
+      // DTO'da tanimsiz alanlari kirp...
       whitelist: true,
+      // ...ve sessizce yutmak yerine 400 ile reddet. Boylece istemci
+      // "aktif", "rol" gibi beklenmeyen alanlari gonderdiginde fark ederiz.
+      forbidNonWhitelisted: true,
       transform: true,
+      transformOptions: { enableImplicitConversion: false },
     }),
   );
 

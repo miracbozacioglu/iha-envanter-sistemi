@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 
 export class RedTalepDto {
   @ApiProperty({
@@ -9,5 +9,6 @@ export class RedTalepDto {
   })
   @IsString({ message: 'redSebebi metin olmalidir.' })
   @MinLength(1, { message: 'redSebebi bos birakilamaz.' })
+  @MaxLength(500, { message: 'Red sebebi en fazla 500 karakter olabilir.' })
   redSebebi: string;
 }

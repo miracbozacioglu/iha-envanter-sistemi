@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, Max, Min } from 'class-validator';
 
 export class CreateSiparisDto {
   @ApiProperty({
@@ -26,6 +26,7 @@ export class CreateSiparisDto {
   })
   @IsInt({ message: 'miktar tam sayi olmalidir.' })
   @Min(1, { message: 'miktar en az 1 olmalidir.' })
+  @Max(1000000, { message: 'miktar en fazla 1000000 olabilir.' })
   miktar: number;
 
   @ApiPropertyOptional({
@@ -38,5 +39,6 @@ export class CreateSiparisDto {
     { message: 'birimFiyat en fazla 2 ondalik basamakli bir sayi olmalidir.' },
   )
   @Min(0, { message: 'birimFiyat negatif olamaz.' })
+  @Max(100000000, { message: 'birimFiyat en fazla 100000000 olabilir.' })
   birimFiyat?: number;
 }

@@ -4,6 +4,11 @@ generator client {
   output       = "../generated/prisma"
   runtime      = "nodejs"
   moduleFormat = "cjs"
+  // Uretilen kod varsayilan olarak ".ts" uzantili import yaziyor. tsconfig'de
+  // rewriteRelativeImportExtensions kapali oldugu icin tsc bu uzantiyi oldugu
+  // gibi birakiyor ve derlenmis dist calisma aninda modulu bulamiyor.
+  // ".js" ile uretmek dist'i dogru kiliyor.
+  importFileExtension = "js"
 }
 
 datasource db {

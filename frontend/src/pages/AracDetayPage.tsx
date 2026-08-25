@@ -3,7 +3,7 @@ import {
   ArrowLeft,
   History,
   LoaderCircle,
-  PlaneTakeoff,
+  Drone,
   Replace,
   Wrench,
   X,
@@ -86,7 +86,7 @@ function Icerik({ arac }: { arac: IhaAraci }) {
         <div className="relative flex flex-wrap items-start justify-between gap-5">
           <div className="flex min-w-0 items-start gap-4">
             <span className="grid size-12 shrink-0 place-items-center rounded-xl border border-signal-500/25 bg-signal-900/40 text-signal-400">
-              <PlaneTakeoff className="size-6" strokeWidth={1.75} />
+              <Drone className="size-6" strokeWidth={1.75} />
             </span>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2.5">
@@ -121,7 +121,7 @@ function Icerik({ arac }: { arac: IhaAraci }) {
             <button
               type="button"
               onClick={() => setDegistirAcik(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-4 py-2.5 text-sm font-semibold text-fog-100 transition hover:bg-info-400"
+              className="inline-flex items-center gap-2 rounded-lg bg-info-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-info-400"
             >
               <Replace className="size-4" strokeWidth={2.25} />
               Parça değiştir
@@ -364,7 +364,7 @@ function DegistirModali({ arac, onKapat }: { arac: IhaAraci; onKapat: () => void
           bekliyor={degistir.isPending}
           etiket="Değişimi kaydet"
           ikon={<Replace className="size-4" strokeWidth={2.25} />}
-          sinif="bg-info-500 text-fog-100 hover:bg-info-400"
+          sinif="bg-info-500 text-onbright hover:bg-info-400"
         />
       </form>
     </Modal>
@@ -452,7 +452,7 @@ function TamirModali({ arac, onKapat }: { arac: IhaAraci; onKapat: () => void })
           bekliyor={tamir.isPending}
           etiket="Tamiri kaydet"
           ikon={<Wrench className="size-4" strokeWidth={2.25} />}
-          sinif="bg-success-500 text-ink-950 hover:bg-success-400"
+          sinif="bg-success-500 text-onbright hover:bg-success-400"
         />
       </form>
     </Modal>

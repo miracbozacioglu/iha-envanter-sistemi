@@ -137,7 +137,7 @@ export function TalepFormPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-5 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? (
               <>

@@ -1,6 +1,6 @@
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { TalepDurumStepper } from '../components/TalepDurumStepper';
 import { Bos, Hata, Yukleniyor } from '../components/ui/DurumKutusu';
 import { useAuth } from '../hooks/useAuth';
@@ -18,7 +18,15 @@ export function TaleplerPage() {
   // Talep açma backend'de yalnızca teknisyene açık; buton da öyle olmalı.
   const teknisyen = user?.rol === 'TEKNISYEN';
 
-  const [filtre, setFiltre] = useState<DurumFiltresi>('HEPSI');
+  // Dashboard "Bekleyen talep" kartı /talepler?durum=BEKLIYOR ile geliyor;
+  // başlangıç filtresini adresten okuyoruz (lazy initializer, effect gerekmez).
+  const [searchParams] = useSearchParams();
+  const [filtre, setFiltre] = useState<DurumFiltresi>(() => {
+    const gelen = searchParams.get('durum');
+    return gelen && (TUM_DURUMLAR as string[]).includes(gelen)
+      ? (gelen as TalepDurumu)
+      : 'HEPSI';
+  });
   const talepler = useTalepler(filtre === 'HEPSI' ? undefined : filtre);
 
   return (
@@ -51,7 +59,7 @@ export function TaleplerPage() {
         {teknisyen && (
           <Link
             to="/talepler/yeni"
-            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-signal-400"
+            className="inline-flex items-center gap-2 rounded-lg bg-signal-500 px-4 py-2.5 text-sm font-semibold text-onbright transition hover:bg-signal-400"
           >
             <Plus className="size-4" strokeWidth={2.5} />
             Yeni Talep

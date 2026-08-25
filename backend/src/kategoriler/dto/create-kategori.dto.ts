@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateKategoriDto {
   @ApiProperty({
@@ -8,6 +8,7 @@ export class CreateKategoriDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Kategori adi bos birakilamaz.' })
+  @MaxLength(100, { message: 'Kategori adi en fazla 100 karakter olabilir.' })
   ad: string;
 
   @ApiPropertyOptional({
@@ -16,5 +17,6 @@ export class CreateKategoriDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 }

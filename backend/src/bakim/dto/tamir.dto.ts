@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
 export class TamirDto {
   @ApiProperty({
@@ -24,5 +24,6 @@ export class TamirDto {
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, { message: 'Aciklama en fazla 500 karakter olabilir.' })
   aciklama?: string;
 }

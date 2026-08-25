@@ -147,7 +147,7 @@ export function ParcaSecici({
         <ul
           id={listeId}
           role="listbox"
-          className="absolute z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-lg border border-ink-600 bg-ink-850 py-1 shadow-2xl shadow-black/60"
+          className="absolute z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-lg border border-ink-600 bg-ink-850 py-1 lift-lg"
         >
           {parcalar.length === 0 ? (
             <li className="px-3.5 py-3 text-xs text-fog-700">

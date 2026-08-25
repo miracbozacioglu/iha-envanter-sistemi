@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Gizli bilgiler: .env.example haric tum .env varyantlari disarida.
+# VITE_ onekli degiskenler bundle'a gomuldugu icin buraya asla sir yazilmaz.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

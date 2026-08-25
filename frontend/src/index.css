@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+/*
+ * Tema sınıf tabanlı: kullanıcı manuel seçiyor, işletim sistemi tercihi
+ * belirleyici değil. Sınıf <html> üzerinde duruyor (bkz. ThemeContext).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ------------------------------------------------------------------
    İHA Envanter — komuta-kontrol temalı tasarım belirteçleri
-   Koyu, yeşile çalan nötr zemin + turkuaz sinyal vurgusu.
+
+   Belirteçler anlamsal: `ink-*` yüzey katmanları, `fog-*` metin,
+   `signal-*` birincil vurgu, geri kalanı durum renkleri. Bileşenler
+   ham palet adı (slate-900 vb.) kullanmadığı için açık tema, bu
+   belirteçlerin `.light` altında yeniden tanımlanmasından ibaret —
+   tek tek `dark:` varyantı eklemeye gerek yok.
+
+   Ölçek yönü her iki temada da aynı anlamı taşır:
+   ink-950 en dipteki zemin, ink-500 en belirgin kenarlık;
+   fog-100 birincil metin, fog-700 en soluk metin.
 ------------------------------------------------------------------ */
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -55,12 +70,121 @@
   --color-danger-500: #E23F37;
   --color-danger-900: #3A1210;
 
+  /*
+   * Dolu vurgu zeminlerinin (bg-signal-500, bg-danger-500 …) üzerindeki metin.
+   * Tek aile yetiyor: koyu temada TÜM vurgu dolguları parlak olduğu için
+   * üzerine koyu metin, açık temada tümü koyulaştığı için beyaz metin gider.
+   * Yani bu belirteç zeminle birlikte ters çevrilir — bkz. `.light` bloğu.
+   *
+   * Kırmızı/mavi dolguların koyu temada da "derin" sayıldığı bir ikinci aile
+   * (--color-ondeep) vardı; danger-400/info-400 aslında parlak olduğu için
+   * açık metin o dolgularda 2.1:1'e kadar düşüyordu. Kaldırıldı.
+   */
+  --color-onbright: #050908;
+
   --radius-panel: 0.875rem;
 }
 
+/* ------------------------------------------------------------------
+   AÇIK TEMA — aynı belirteçler, ters çevrilmiş parlaklık.
+   Kimlik korunuyor: turkuaz vurgu, keskin köşeler, HUD dokusu, durum
+   renk kodlaması. Yalnızca zemin/kontrast yön değiştiriyor.
+   Vurgu tonları açık zeminde WCAG AA (>=4.5:1) tutacak şekilde koyulaştı.
+------------------------------------------------------------------ */
+.light {
+  /* Zemin katmanları: ink-950 en dipteki sayfa zemini, panel en üstte beyaz */
+  --color-ink-950: #ECF1EF;
+  --color-ink-900: #F7FAF9;
+  --color-ink-850: #FFFFFF;
+  --color-ink-800: #E3EAE7;
+  --color-ink-700: #D0DAD5;
+  --color-ink-600: #B7C4BE;
+  --color-ink-500: #9BAAA3;
+
+  /*
+   * Metin: fog-100 birincil (en koyu), fog-700 en soluk. En soluk ton bile
+   * beyaz kartta 4.5:1'in üstünde kalacak şekilde seçildi; hiyerarşi
+   * korunsun diye fog-500 ile arasına belirgin bir aralık bırakıldı.
+   */
+  --color-fog-100: #0E1714;
+  --color-fog-300: #33423C;
+  --color-fog-500: #4E5F57;
+  --color-fog-700: #5F7069;
+
+  /*
+   * Vurgu ailelerinde 300 basamağı, koyu temada "daha parlak / daha öne
+   * çıkan" ton demek. Açık zeminde öne çıkmanın karşılığı koyulaşmak
+   * olduğundan 300, burada 400'den bir tık DAHA KOYU. Böylece hem
+   * `text-*-300` daha vurgulu kalıyor hem `hover:bg-alert-300` görünür bir
+   * değişim veriyor.
+   */
+  --color-signal-300: #08705F;
+  --color-signal-400: #0B7B69;
+  --color-signal-500: #0A6B5B;
+  --color-signal-600: #085548;
+  --color-signal-900: #D5F0EA;
+
+  /* Haki / askeri yeşil */
+  --color-olive-300: #4A5A2E;
+  --color-olive-400: #5C6E3B;
+  --color-olive-600: #7A8A5A;
+
+  /* Bilgi (mavi) */
+  --color-info-300: #185BA0;
+  --color-info-400: #1A62B0;
+  --color-info-500: #17559A;
+  --color-info-900: #DCEAF9;
+
+  /* Başarı (yeşil) */
+  --color-success-300: #0F5F37;
+  --color-success-400: #12703F;
+  --color-success-500: #10653A;
+  --color-success-900: #D8F0E1;
+
+  /*
+   * Uyarı: açık zeminde parlak amber ne metin olarak ne de beyaz metnin
+   * altında okunuyor; bronza çalan koyu amber hem AA geçiyor hem "dikkat"
+   * kodunu koruyor.
+   */
+  --color-alert-300: #744E02;
+  --color-alert-400: #8A5D03;
+  --color-alert-600: #6E4A02;
+
+  --color-danger-400: #C2251C;
+  --color-danger-500: #B01D15;
+  --color-danger-900: #FBE0DE;
+
+  /* Açık temada tüm dolu vurgular koyulaştığı için üzerine beyaz metin gider */
+  --color-onbright: #FFFFFF;
+}
+
 @layer base {
-  :root {
+  /*
+   * HUD ızgarası ve yükseltme gölgesi tema başına ayarlanıyor: koyu zeminde
+   * açık çizgi/sert siyah gölge doğruyken, açık zeminde ikisi de fazla sert
+   * kaçıyor.
+   */
+  :root,
+  .dark {
     color-scheme: dark;
+    --hud-grid-line: color-mix(in oklab, var(--color-signal-400) 6%, transparent);
+    --hud-grid-fine-line: color-mix(in oklab, var(--color-fog-500) 5%, transparent);
+    --shadow-lift: 0 18px 36px -14px rgb(0 0 0 / 0.6);
+    --shadow-lift-lg: 0 28px 60px -18px rgb(0 0 0 / 0.7);
+    --scrim-bg: color-mix(in oklab, var(--color-ink-950) 80%, transparent);
+  }
+
+  .light {
+    color-scheme: light;
+    --hud-grid-line: color-mix(in oklab, var(--color-signal-500) 12%, transparent);
+    --hud-grid-fine-line: color-mix(in oklab, var(--color-fog-500) 9%, transparent);
+    --shadow-lift: 0 14px 30px -14px rgb(13 34 27 / 0.18);
+    --shadow-lift-lg: 0 26px 54px -18px rgb(13 34 27 / 0.22);
+    /*
+     * Perde her iki temada da KOYU kalmalı. Zeminle birlikte ters çevrilseydi
+     * açık temada beyaz perdenin üzerindeki beyaz modal kaybolurdu.
+     */
+    --scrim-bg: rgb(12 30 24 / 0.42);
   }
 
   html,
@@ -117,32 +241,33 @@
 /* Milimetrik ölçüm ızgarası — arayüze "harita/telemetri" dokusu verir */
 @utility hud-grid {
   background-image:
-    linear-gradient(
-      to right,
-      color-mix(in oklab, var(--color-signal-400) 6%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in oklab, var(--color-signal-400) 6%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(to right, var(--hud-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hud-grid-line) 1px, transparent 1px);
   background-size: 44px 44px;
 }
 
 @utility hud-grid-fine {
   background-image:
-    linear-gradient(
-      to right,
-      color-mix(in oklab, var(--color-fog-500) 5%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in oklab, var(--color-fog-500) 5%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(to right, var(--hud-grid-fine-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hud-grid-fine-line) 1px, transparent 1px);
   background-size: 14px 14px;
+}
+
+/*
+ * Yükseltme gölgeleri. `shadow-black/70` açık temada duman lekesi gibi
+ * duruyordu; gölge rengi de temayla değişsin diye belirtece bağlandı.
+ */
+/* Modal / mobil çekmece perdesi — bkz. --scrim-bg */
+@utility scrim {
+  background-color: var(--scrim-bg);
+}
+
+@utility lift {
+  box-shadow: var(--shadow-lift);
+}
+
+@utility lift-lg {
+  box-shadow: var(--shadow-lift-lg);
 }
 
 /* Küçük, seyrek harfli etiketler: komuta paneli tipografisi */

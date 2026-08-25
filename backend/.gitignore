@@ -1,8 +1,15 @@
 node_modules
-# Keep environment variables out of version control
+dist
+coverage
+
+# Gizli bilgiler: .env.example haric tum .env varyantlari disarida
 .env
+.env.*
+!.env.example
+
 .agents/
 .claude/
 .windsurf/
 
-/generated/prisma
+# Prisma generate ciktisi (schema.prisma -> output = "../generated/prisma")
+/generated/

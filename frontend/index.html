@@ -15,7 +15,27 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>İHA Envanter — Bakım &amp; Lojistik</title>
+    <title>İHA Envanter Sistemi</title>
+    <script>
+      /*
+       * Tema sınıfını ilk boyamadan ÖNCE koyar; aksi halde açık tema seçmiş
+       * kullanıcı her yüklemede bir kare koyu ekran görürdü. Anahtar ve
+       * varsayılan src/context/theme-context.ts ile aynı kalmalı.
+       */
+      (function () {
+        var tema = 'dark';
+        try {
+          var kayitli = localStorage.getItem('iha-envanter:tema');
+          if (kayitli === 'light' || kayitli === 'dark') tema = kayitli;
+        } catch (e) {
+          /* storage kapalı: varsayılanla devam */
+        }
+        document.documentElement.classList.add(tema);
+        if (tema === 'light') {
+          document.querySelector('meta[name="theme-color"]').content = '#ECF1EF';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

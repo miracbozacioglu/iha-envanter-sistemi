@@ -278,6 +278,28 @@ export interface LoginYaniti {
   user: Kullanici;
 }
 
+/**
+ * Özetteki son hareket satırı. Dikkat: `/stok/hareketler` yanıtından dar —
+ * depo taşımaz, parça yalnızca kod/ad ile gelir.
+ */
+export interface OzetHareket {
+  id: number;
+  tip: HareketTipi;
+  miktar: number;
+  tarih: string;
+  parca: Pick<Parca, 'id' | 'kod' | 'ad'>;
+  kullanici: HareketKullanicisiKisa;
+}
+
+/** Özetteki kritik parça satırı — uyarı için gereken asgari alanlar. */
+export interface OzetKritikParca {
+  id: number;
+  kod: string;
+  ad: string;
+  toplamStok: number;
+  kritikSeviye: number;
+}
+
 /** GET /istatistik/ozet — dashboard tek istekte bunu döner. */
 export interface IstatistikOzeti {
   toplamParca: number;
@@ -285,8 +307,9 @@ export interface IstatistikOzeti {
   toplamKategori: number;
   bekleyenTalep: number;
   kritikStokSayisi: number;
-  sonHareketler: StokHareketi[];
-  kritikParcalar: Parca[];
+  sonHareketler: OzetHareket[];
+  kritikParcalar: OzetKritikParca[];
+  /** Tüm durumlar bulunur; kaydı olmayanlar 0 gelir. */
   durumDagilimi: Record<TalepDurumu, number>;
 }
 

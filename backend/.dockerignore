@@ -1,0 +1,29 @@
+# Bagimliliklar imaj icinde npm ci ile kurulur
+node_modules
+
+# Derleme ciktilari imaj icinde uretilir
+dist
+generated
+*.tsbuildinfo
+
+# Gizli bilgiler asla imaja girmez; degiskenler calisma aninda env ile gelir
+.env
+.env.*
+!.env.example
+
+# Versiyon kontrolu / editor / arac dosyalari
+.git
+.gitignore
+.vscode
+.idea
+.agents
+.claude
+.windsurf
+
+# Test ve gelistirme artiklari
+coverage
+test
+*.spec.ts
+Dockerfile
+.dockerignore
+README.md

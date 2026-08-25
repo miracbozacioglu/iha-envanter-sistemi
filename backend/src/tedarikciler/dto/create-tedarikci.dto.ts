@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateTedarikciDto {
   @ApiProperty({
@@ -8,11 +14,13 @@ export class CreateTedarikciDto {
   })
   @IsString()
   @IsNotEmpty({ message: 'Tedarikci adi bos birakilamaz.' })
+  @MaxLength(150, { message: 'Tedarikci adi en fazla 150 karakter olabilir.' })
   ad: string;
 
   @ApiPropertyOptional({ description: 'Telefon', example: '+90 212 000 00 00' })
   @IsOptional()
   @IsString()
+  @MaxLength(30, { message: 'Telefon en fazla 30 karakter olabilir.' })
   telefon?: string;
 
   @ApiPropertyOptional({
@@ -21,5 +29,6 @@ export class CreateTedarikciDto {
   })
   @IsOptional()
   @IsEmail({}, { message: 'Gecerli bir e-posta adresi giriniz.' })
+  @MaxLength(255, { message: 'E-posta en fazla 255 karakter olabilir.' })
   email?: string;
 }
